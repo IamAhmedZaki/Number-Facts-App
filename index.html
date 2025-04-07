@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>number fact</title>
+    <style>
+        #fact{
+         display: none;   
+        }
+    </style>
+</head>
+<body class="bg-dark">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card bg-primary text-white mt-5 p-4">
+                    <h1>Number Facts</h1>
+                    <p>Enter a number to get a fact</p>
+                    <input type="number" class="form-control form-control-lg" placeholder="Enter a number" id="numberInput">
+                    <div id="fact" class="card-body">
+                        <h4 class="card-title">
+                            Number fact
+                        </h4>
+                        <p class="card-text" id="facttext"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    let factText=document.querySelector('#facttext')
+    let fact=document.querySelector('#fact')
+    let numberInput=document.querySelector('#numberInput')
+
+    numberInput.addEventListener('input',getFactAjax)
+
+    function getFactAjax() {
+    let number = numberInput.value.trim(); // remove leading/trailing spaces
+
+    // 🚫 If input is empty or invalid, clear and hide fact
+    if (number === '' || isNaN(number)) {
+        fact.style.display = 'none';
+        factText.textContent = '';
+        return;
+    }
+
+    fetch('http://numbersapi.com/' + number)
+        .then((response) => response.text())
+        .then((data) => {
+            fact.style.display = 'block';
+            factText.textContent = data;
+        })
+        .catch((error) => {
+            fact.style.display = 'block';
+            factText.textContent = 'Something went wrong!';
+            console.error(error);
+        });
+}
+
+</script>
+</html>
